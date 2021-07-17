@@ -12,33 +12,40 @@ export default class RandomPlanet extends Component {
     name: null,
     population: null,
     rotationPeriod: null,
-
     diameter: null,
     preloader: true,
     error: false,
   };
-
-  constructor() {
-    super();
+    
+  componentDidMount() {
     this.updatePlanet();
+    this.interval = setInterval(this.updatePlanet, 2000);
   }
 
-  updatePlanet() {
-    const id = Math.floor(Math.random() * 25) + 2;
-    this.swapiService.getPlanet(id).then(p => {
-      this.setState({
-        id: id,
-        name: p.name,
-        population: p.population,
-        rotationPeriod: p.rotation_period,
-        diameter: p.diameter,
-        preloader: false,
-      });
-    })
-    .catch(() => this.setState({
-      error: true
-    }))
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
+
+  updatePlanet = () => {
+    const id = Math.floor(Math.random() * 25) + 2;
+    this.swapiService
+      .getPlanet(id)
+      .then(p => {
+        this.setState({
+          id: id,
+          name: p.name,
+          population: p.population,
+          rotationPeriod: p.rotation_period,
+          diameter: p.diameter,
+          preloader: false,
+        });
+      })
+      .catch(() =>
+        this.setState({
+          error: true,
+        })
+      );
+  };
 
   render() {
     const { id, name, population, rotationPeriod, diameter } = this.state;

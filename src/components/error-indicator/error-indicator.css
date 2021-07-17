@@ -3,3 +3,9 @@
     margin: 0 auto;
     color: orange;
 }
+.error-indicator img{
+    height: 100px;
+    width: 100px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
